@@ -2,7 +2,7 @@ from flask import Flask, g, request, render_template, url_for, abort
 from flask import redirect, jsonify, send_file
 from pymongo import Connection, GEO2D
 from bson.objectid import ObjectId
-import logging, os, time
+import logging, os
 from datetime import datetime
 from user import User
 from random import choice
@@ -13,6 +13,18 @@ app.config.from_pyfile('config.py')
 
 if app.debug:
     logging.basicConfig(level=logging.DEBUG)
+
+
+def get_lat(s):
+    if (s == 'none'):
+        s = '33.6389241'
+    return float(s)
+
+
+def get_lon(s):
+    if (s == 'none'):
+        s = '-84.43270009999999'
+    return float(s)
 
 
 def get_user():
@@ -59,8 +71,8 @@ def show_solution(id):
 
 @app.route("/solution/<id>", methods=["POST"])
 def create_solution(id):
-    lat = float(request.form['lat'])
-    lon = float(request.form['lon'])
+    lat = get_lat(request.form['lat'])
+    lon = get_lon(request.form['lon'])
     solution = {'challenge': ObjectId(id),
                 'user': ObjectId(g.user.id),
                 'ts': datetime.now(),
@@ -136,9 +148,8 @@ def get_geo(id):
 
 @app.route("/near.json")
 def get_near():
-    time.sleep(1)
-    lat = float(request.args['lat'])
-    lon = float(request.args['lon'])
+    lat = get_lat(request.args['lat'])
+    lon = get_lon(request.args['lon'])
     result = []
     for doc in g.db.challenges.find({'loc': {"$near": [lat, lon]}}).limit(10):
         result.append(str(doc['_id']))
@@ -159,7 +170,7 @@ def set_geo(id):
     c = g.db.challenges.find_one({'_id': ObjectId(id)})
     if not c:
         abort(500)
-    c['loc'] = [float(request.form['lat']), float(request.form['lon'])]
+    c['loc'] = [get_lat(request.form['lat']), get_lon(request.form['lon'])]
     g.db.challenges.save(c, safe=True)
 
     # It's complete

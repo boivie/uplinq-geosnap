@@ -69,6 +69,7 @@ var onLoad = function() {
         console.log("onGetCamerasSuccess");
         camera = cameras[0];
         console.log("  camera id: " + camera.id);
+        camera.setFeatureValue("PICTURE_SIZE", "320x240");
         camera.createPreviewNode(onCreatePreviewNodeSuccess);
     }
 
