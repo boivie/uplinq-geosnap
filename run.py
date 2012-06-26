@@ -44,7 +44,35 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/claim/<id>")
+@app.route("/solution/<id>")
+def show_solution(id):
+    solution = g.db.solutions.find_one({'_id': ObjectId(id)})
+    if not solution:
+        abort(404)
+    challenge_id = str(solution['challenge'])
+    print(challenge_id)
+    return render_template("show_solution.html",
+                           id = id,
+                           cid = challenge_id,
+                           correct = solution['correct'])
+
+
+@app.route("/solution/<id>", methods=["POST"])
+def create_solution(id):
+    lat = float(request.form['lat'])
+    lon = float(request.form['lon'])
+    solution = {'challenge': ObjectId(id),
+                'user': ObjectId(g.user.id),
+                'ts': datetime.now(),
+                'loc': [lat, lon],
+                'correct': True}
+    sid = g.db.solutions.insert(solution, safe=True)
+    return jsonify(id = str(sid),
+                   upload_url = url_for('.upload_solution', id=str(sid)),
+                   solution_url = url_for('.show_solution', id=str(sid)))
+
+
+@app.route("/claim/<id>", methods=["GET"])
 def claim(id):
     return render_template("claim.html",
                            id = id)
@@ -53,8 +81,7 @@ def claim(id):
 @app.route("/create/start")
 def create_start():
     challenge = {'create_ts': datetime.now(),
-                 'user': g.user.id,
-                 'solutions': []}
+                 'user': g.user.id}
     id = g.db.challenges.insert(challenge, safe = True)
     return render_template("create_tour.html",
                            id = str(id))
@@ -74,12 +101,21 @@ def hunt_challenge(id):
                            id=id)
 
 
-@app.route("/image/<id>/<type>.jpeg")
+@app.route("/challenge/<id>/image/<type>.jpeg")
 def challenge_image(id, type):
     doc = g.db.challenges.find_one({'_id': ObjectId(id)})
     if not doc:
         abort(404)
     f = open(doc['pic_%s' % type]['fname'])
+    return send_file(f, mimetype='image/jpeg')
+
+
+@app.route("/solution/<id>/image.jpeg")
+def solution_image(id):
+    doc = g.db.solutions.find_one({'_id': ObjectId(id)})
+    if not doc:
+        abort(404)
+    f = open(doc['pic']['fname'])
     return send_file(f, mimetype='image/jpeg')
 
 
@@ -100,7 +136,7 @@ def get_geo(id):
 
 @app.route("/near.json")
 def get_near():
-    time.sleep(3)
+    time.sleep(1)
     lat = float(request.args['lat'])
     lon = float(request.args['lon'])
     result = []
@@ -146,6 +182,19 @@ def upload(id, type):
         abort(500)
     c['pic_%s' % type] = {'fname': filename, 'ts': datetime.now()}
     g.db.challenges.save(c, safe=True)
+    return ""
+
+
+@app.route("/solution-upload/<id>", methods=["POST"])
+def upload_solution(id):
+    solution = g.db.solutions.find_one({'_id': ObjectId(id)})
+    if not solution:
+        abort(404)
+    challenge = str(solution['challenge'])
+    filename = os.path.join(app.config['UPLOAD_FOLDER'], "%s-s-%s.jpg" % (challenge, id))
+    open(filename, "wb").write(request.data)
+    solution['pic'] = {'fname': filename, 'ts': datetime.now()}
+    g.db.solutions.save(solution, safe=True)
     return ""
 
 

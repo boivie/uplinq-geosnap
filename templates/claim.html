@@ -24,9 +24,10 @@ var camera;
 // --------------------------------------------------------------------------
 // Capture functions
 // --------------------------------------------------------------------------
-function sendArrayBuffer(buffer) {
+function sendArrayBuffer(buffer, solution_id, upload_url, solution_url) {
+  
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', '{{upload_url}}', true);
+  xhr.open('POST', upload_url, true);
   xhr.onload = function(e) {};
   xhr.expected = 200;
   xhr.onreadystatechange = function() {
@@ -34,7 +35,7 @@ function sendArrayBuffer(buffer) {
     if (xhr.readyState === 4 && xhr.status === xhr.expected) {
       data = (xhr.mozResponseArrayBuffer || xhr.mozResponse ||
                   xhr.responseArrayBuffer || xhr.response);
-      window.location="{{next_url}}";
+      window.location=solution_url;
     }
   };
   xhr.send(buffer);
@@ -42,7 +43,18 @@ function sendArrayBuffer(buffer) {
 
 var onCaptureImageSuccess = function (imageBuffer) {
     console.log("onCaptureImageSuccess");
-    sendArrayBuffer(imageBuffer);
+    // Create a solution, upload the image to it.
+    var lat = $('#lat').val();
+    var lon = $('#lon').val();
+    var data = {lat: lat, lon: lon};
+    console.log(data);
+    $.ajax({
+      type: "POST",
+      url: "{{url_for('.create_solution', id=id)}}",
+      data: data,
+    }).done(function(msg) {
+      sendArrayBuffer(imageBuffer, msg.id, msg.upload_url, msg.solution_url)
+    });
 }
 
 var onCaptureClicked = function () {

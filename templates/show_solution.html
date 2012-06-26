@@ -1,0 +1,23 @@
+{% extends "basewtop.html" %}
+{% block title %}Your Solution{% endblock %}
+{% block js %}
+{% endblock %}
+{% block subcontents %}
+{% if correct %}
+<div>Congratulations! You successfully completed this challenge!</div>
+{% else %}
+<div>No, not there just yet...</div>
+{% endif %}
+The challenge:
+<div>
+  <img src="{{url_for('.challenge_image', id=cid, type='high')}}"/>
+</div>
+Your image:
+<div>
+  <img src="{{url_for('.solution_image', id=id)}}"/>
+</div>
+<ul>
+  <li><a href="{{url_for('.find_challenges')}}">One more time!</a></li>
+  <li><a href="{{url_for('.index')}}">Return home</a></li>
+</ul>
+{% endblock %}
