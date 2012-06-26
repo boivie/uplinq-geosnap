@@ -1,0 +1,28 @@
+{% extends "basewtop.html" %}
+{% block title %}Find Challenges{% endblock %}
+{% block js %}
+{% endblock %}
+{% block subcontents %}
+<script> 
+function success(position) {
+  console.log(position.coords.latitude, position.coords.longitude);
+  $.getJSON(  
+     '/near.json',
+      {lat: position.coords.latitude, lon: position.coords.longitude},  
+      function(json) {
+        window.location = json.url;
+      }
+  );
+}
+
+if (navigator.geolocation) 
+{
+  navigator.geolocation.getCurrentPosition(success,
+  function (error)
+  {
+    alert(error);
+  });
+}
+</script> 
+Looking for challenges near you ... Please wait.
+{% endblock %}

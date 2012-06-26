@@ -1,0 +1,13 @@
+{% extends "basewtop.html" %}
+{% block title %}Hunt Challenges{% endblock %}
+{% block js %}
+{% endblock %}
+{% block subcontents %}
+<div>
+  <img src="{{url_for('.challenge_image', id=id, type='high')}}"/>
+</div>
+<a href="{{url_for('.claim', id=id)}}">I found it!</a>
+<form method="POST" action="{{url_for('.skip_challenge', id=id)}}">
+  <input type="submit" value="Skip"/>
+</form>
+{% endblock %}

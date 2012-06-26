@@ -1,9 +1,11 @@
-from flask import Flask, g, request, render_template, url_for, abort, redirect
-from pymongo import Connection
+from flask import Flask, g, request, render_template, url_for, abort
+from flask import redirect, jsonify, send_file
+from pymongo import Connection, GEO2D
 from bson.objectid import ObjectId
-import logging, os
+import logging, os, time
 from datetime import datetime
 from user import User
+from random import choice
 
 gconn = Connection()
 app = Flask(__name__)
@@ -42,6 +44,12 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/claim/<id>")
+def claim(id):
+    return render_template("claim.html",
+                           id = id)
+
+
 @app.route("/create/start")
 def create_start():
     challenge = {'create_ts': datetime.now(),
@@ -50,6 +58,29 @@ def create_start():
     id = g.db.challenges.insert(challenge, safe = True)
     return render_template("create_tour.html",
                            id = str(id))
+
+
+@app.route("/find")
+def find_challenges():
+    return render_template("find_challenges.html")
+
+
+@app.route("/hunt/<id>")
+def hunt_challenge(id):
+    doc = g.db.challenges.find_one({'_id': ObjectId(id)})
+    if not doc:
+        abort(404)
+    return render_template("hunt_challenge.html",
+                           id=id)
+
+
+@app.route("/image/<id>/<type>.jpeg")
+def challenge_image(id, type):
+    doc = g.db.challenges.find_one({'_id': ObjectId(id)})
+    if not doc:
+        abort(404)
+    f = open(doc['pic_%s' % type]['fname'])
+    return send_file(f, mimetype='image/jpeg')
 
 
 @app.route("/create/<id>/<type>")
@@ -67,6 +98,21 @@ def get_geo(id):
                            id=id)
 
 
+@app.route("/near.json")
+def get_near():
+    time.sleep(3)
+    lat = float(request.args['lat'])
+    lon = float(request.args['lon'])
+    result = []
+    for doc in g.db.challenges.find({'loc': {"$near": [lat, lon]}}).limit(10):
+        result.append(str(doc['_id']))
+    if len(result) == 0:
+        return jsonify(error = 'No challenges nearby')
+    id = choice(result)
+    return jsonify(id = id,
+                   url = url_for('.hunt_challenge', id=id))
+
+
 @app.route("/create/<id>/done")
 def create_done(id):
     return render_template("create_done.html", id=id)
@@ -77,9 +123,18 @@ def set_geo(id):
     c = g.db.challenges.find_one({'_id': ObjectId(id)})
     if not c:
         abort(500)
-    c['coords'] = [float(request.form['lat']), float(request.form['lon'])]
+    c['loc'] = [float(request.form['lat']), float(request.form['lon'])]
     g.db.challenges.save(c, safe=True)
+
+    # It's complete
+    g.user.add_challenge(id)
     return redirect(url_for('.create_done', id=id))
+
+
+@app.route("/skip/<id>", methods=["POST"])
+def skip_challenge(id):
+    # NOTE: Does not actually skip it right now...
+    return redirect(url_for('.find_challenges'))
 
 
 @app.route("/upload/<id>/<type>", methods=["POST"])
@@ -91,11 +146,9 @@ def upload(id, type):
         abort(500)
     c['pic_%s' % type] = {'fname': filename, 'ts': datetime.now()}
     g.db.challenges.save(c, safe=True)
-
-    # When the first image is uploaded, associate the challenge with the user.
-    g.user.add_challenge(id)
     return ""
 
 
 if __name__ == "__main__":
+    get_db().challenges.ensure_index([("loc", GEO2D)])
     app.run(host='0.0.0.0', port = 8088, debug = True, threaded = True)

@@ -1,0 +1,112 @@
+{% extends "basewtop.html" %}
+{% block title %}Claim Challenge!{% endblock %}
+{% block js %}
+    <script src='/static/module_emulation.js'></script>
+{% endblock %}
+{% block subcontents %}
+<script> 
+
+// --------------------------------------------------------------------------
+// Camera 1: Preview and Capture
+//
+// Sample code to get started with camera.  Create preview node and takes
+// a snapshot.  This sample code does not cover failure conditions.
+// For failure condition checks, see the other samples.
+//
+// --------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------
+// Globals to store camera and module
+// --------------------------------------------------------------------------
+var module;
+var camera;
+
+// --------------------------------------------------------------------------
+// Capture functions
+// --------------------------------------------------------------------------
+function sendArrayBuffer(buffer) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '{{upload_url}}', true);
+  xhr.onload = function(e) {};
+  xhr.expected = 200;
+  xhr.onreadystatechange = function() {
+    var data;
+    if (xhr.readyState === 4 && xhr.status === xhr.expected) {
+      data = (xhr.mozResponseArrayBuffer || xhr.mozResponse ||
+                  xhr.responseArrayBuffer || xhr.response);
+      window.location="{{next_url}}";
+    }
+  };
+  xhr.send(buffer);
+}
+
+var onCaptureImageSuccess = function (imageBuffer) {
+    console.log("onCaptureImageSuccess");
+    sendArrayBuffer(imageBuffer);
+}
+
+var onCaptureClicked = function () {
+    console.log("onCaptureClicked");
+    camera.captureImage(onCaptureImageSuccess);
+}
+
+// --------------------------------------------------------------------------
+// Main load function
+// --------------------------------------------------------------------------
+var onLoad = function() {
+    console.log("onLoad");
+
+    var onCreatePreviewNodeSuccess = function (previewElement) {
+        // Preview node created; set height/width and add to DOM
+        console.log("onCreatePreviewNodeSuccess");
+        previewElement.height = 250;
+        previewElement.width = 250;
+        document.getElementById("preview_div").appendChild(previewElement);
+    }
+
+    var onGetCamerasSuccess = function(cameras) {
+        // Save camera and create preview
+        console.log("onGetCamerasSuccess");
+        camera = cameras[0];
+        console.log("  camera id: " + camera.id);
+        camera.createPreviewNode(onCreatePreviewNodeSuccess);
+    }
+
+    var onCameraLoadSuccess = function(cameraModule) {
+        // Module load success; get cameras
+        console.log("onCameraLoadSuccess");
+        module = cameraModule;
+        module.getCameras(onGetCamerasSuccess);
+    }
+
+    console.log("  loading camera module...");
+    navigator.loadModule('camera', onCameraLoadSuccess);
+} 
+
+function success(position) {
+  console.log(position.coords.latitude, position.coords.longitude);
+  $('#lat').val(position.coords.latitude);
+  $('#lon').val(position.coords.longitude);
+  $('#locstatus').html("Got a location - we're good to go");
+}
+
+if (navigator.geolocation) 
+{
+  navigator.geolocation.getCurrentPosition(success,
+  function (error)
+  {
+    alert(error);
+  });
+}
+
+</script> 
+Take a picture of the scene (please try to use the same photo angle as the original picture)
+<div id="preview_div" style="width: 250px; height: 250px;"></div>
+<div id="locstatus">Please wait until we know where you are</div>
+<input type="hidden" id="lat" value="none"/>
+<input type="hidden" id="lon" value="none"/>
+<button onClick="onCaptureClicked()">Go!</button>
+<script>
+onLoad();
+</script>
+{% endblock %}
