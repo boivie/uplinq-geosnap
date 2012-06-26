@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}GeoSnap!{% endblock %}
+{% block content %}
+<img src="/static/logo.png" width="456" height="121" alt="logo" class="logo"/>
+<div class="container">
+  <nav id="main-nav" class="sixteen columns alpha omega">
+    <ul id="menu-primary-menu">
+      <li class="sixteen columns align-center">
+        <a href="{{url_for('.create_start')}}">
+          <div class="title">Create Challenge!</div>
+        </a>
+      </li>
+      <li class="sixteen columns align-center">
+        <a href="#">
+          <div class="title">Solve a Challenge!</div>
+        </a>
+      </li>
+      <li class="sixteen columns align-center">
+        <a href="#">
+          <div class="title">What is this?</div>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<div class="footer">
+  Designed for the <a href="http://www.uplinq.com">Uplinq</a> conference!
+</div>
+{% endblock %}

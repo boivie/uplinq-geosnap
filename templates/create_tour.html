@@ -1,0 +1,10 @@
+{% extends "basewtop.html" %}
+{% block title %}Create Challenge - GeoSnap!{% endblock %}
+{% block subcontents %}
+<ol>
+  <li>Take a picture of a detail of the scene</li>
+  <li>Take a picture with more context</li>
+  <li>Take a picture of the full scenery</li>
+</ol>
+<a href="{{url_for('.take_picture', id=id, type='high')}}">Let's go!</a>
+{% endblock %}
