@@ -13,7 +13,9 @@ class User(object):
     def create(cls):
         d = {'ua': str(request.user_agent),
              'lang': None,
-             'ip': request.remote_addr, 'ts': datetime.now()}
+             'ip': request.remote_addr, 'ts': datetime.now(),
+             'challenges': [],
+             'solutions': []}
         d['_id'] = g.db.users.save(d)
         return User(d)
 
@@ -23,3 +25,8 @@ class User(object):
         if not u:
             return None
         return User(u)
+
+    def add_challenge(self, challenge):
+        u = g.db.users.find_one({'_id': ObjectId(self.id)})
+        u['challenges'].append(ObjectId(challenge))
+        g.db.users.save(u, safe = True)

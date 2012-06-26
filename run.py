@@ -45,7 +45,8 @@ def index():
 @app.route("/create/start")
 def create_start():
     challenge = {'create_ts': datetime.now(),
-                 'user': g.user.id}
+                 'user': g.user.id,
+                 'solutions': []}
     id = g.db.challenges.insert(challenge, safe = True)
     return render_template("create_tour.html",
                            id = str(id))
@@ -90,6 +91,9 @@ def upload(id, type):
         abort(500)
     c['pic_%s' % type] = {'fname': filename, 'ts': datetime.now()}
     g.db.challenges.save(c, safe=True)
+
+    # When the first image is uploaded, associate the challenge with the user.
+    g.user.add_challenge(id)
     return ""
 
 
