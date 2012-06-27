@@ -20,7 +20,7 @@ if (navigator.geolocation)
   navigator.geolocation.getCurrentPosition(success,
   function (error)
   {
-    alert("Geolocation call failed. Using mock location");
+    //alert("Geolocation call failed. Using mock location");
     success({coords: {latitude: 33.6389241, longitude: -84.43270009999999}});
   });
 } else {
