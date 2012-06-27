@@ -26,6 +26,13 @@ if (navigator.geolocation)
 } else {
   alert("No geolocation support!");
 }
+
+function mock() {
+  success({coords: {latitude: 33.6389241, longitude: -84.43270009999999}});
+}
 </script> 
-Looking for challenges near you ... Please wait.
+<p>
+  Looking for challenges near you ... Please wait.
+</p>
+<a href="javascript:mock()">Continue with mock data</a>
 {% endblock %}

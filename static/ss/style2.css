@@ -16,6 +16,13 @@ img.logo {
     margin-top: 20px;
 }
 
+img.capimg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
 div.footer {
     position: fixed;
     right: 0;

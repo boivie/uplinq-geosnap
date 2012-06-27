@@ -10,11 +10,11 @@
 {% endif %}
 The challenge:
 <div>
-  <img src="{{url_for('.challenge_image', id=cid, type='high')}}"/>
+  <img class="capimg" src="{{url_for('.challenge_image', id=cid, type='high')}}"/>
 </div>
 Your image:
 <div>
-  <img src="{{url_for('.solution_image', id=id)}}"/>
+  <img class="capimg" src="{{url_for('.solution_image', id=id)}}"/>
 </div>
 <ul>
   <li><a class="btn" href="{{url_for('.find_challenges')}}">One more time!</a></li>

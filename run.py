@@ -152,7 +152,8 @@ def get_near():
     lon = get_lon(request.args['lon'])
     result = []
     for doc in g.db.challenges.find({'loc': {"$near": [lat, lon]}}).limit(10):
-        result.append(str(doc['_id']))
+        if 'loc' in doc:
+            result.append(str(doc['_id']))
     if len(result) == 0:
         return jsonify(error = 'No challenges nearby')
     id = choice(result)
