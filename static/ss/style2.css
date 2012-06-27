@@ -4,15 +4,10 @@ body {
   line-height: 22px;
   font-family: sans-serif;
   color: #3d4955;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
-
-#main-nav .title {
-font-family: "league-gothic",sans-serif;
-font-size: 20pt;
-font-weight: bold;
-line-height: 2em;
-}
-
 
 img.logo {
     display: block;
@@ -41,36 +36,28 @@ div.topbar {
 
 
 .btn {
-background-color: #0074CC;
-background-image: -webkit-linear-gradient(top, 
-#08C, 
-#05C);
-background-repeat: repeat-x;
-border-bottom-color: 
-rgba(0, 0, 0, 0.246094);
-border-bottom-left-radius: 6px;
-border-bottom-right-radius: 6px;
-border-bottom-style: solid;
-border-bottom-width: 1px;
-border-left-color: 
-rgba(0, 0, 0, 0.0976563);
-border-left-style: solid;
-border-left-width: 1px;
-border-right-color: 
-rgba(0, 0, 0, 0.0976563);
-border-right-style: solid;
-border-right-width: 1px;
-border-top-color: 
-rgba(0, 0, 0, 0.0976563);
-border-top-left-radius: 6px;
-border-top-right-radius: 6px;
-border-top-style: solid;
-border-top-width: 1px;
-box-shadow: 
-rgba(255, 255, 255, 0.199219) 0px 1px 0px 0px inset, 
-rgba(0, 0, 0, 0.046875) 0px 1px 2px 0px;
-color: 
-white;
+    background-color: #0074CC;
+    background-image: -webkit-linear-gradient(top, #08C, #05C);
+    background-repeat: repeat-x;
+    border-bottom-color: 
+    rgba(0, 0, 0, 0.246094);
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-left-color: rgba(0, 0, 0, 0.0976563);
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-color: rgba(0, 0, 0, 0.0976563);
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-top-color: rgba(0, 0, 0, 0.0976563);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    box-shadow: rgba(255, 255, 255, 0.199219) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.046875) 0px 1px 2px 0px;
+    color: white;
 cursor: pointer;
 display: inline-block;
 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -88,11 +75,30 @@ text-shadow:
 rgba(0, 0, 0, 0.246094) 0px -1px 0px;
 vertical-align: middle;
 width: 80%;
-margin-left: auto;
-margin-right: auto;
-margin-top: 20px;
 }
 
 .align-center {
   text-align: center;
+}
+
+ol, ul {
+    list-style: none; }
+
+	ul, ol { margin-bottom: 20px; }
+	ul { list-style: none outside; }
+	ol { list-style: decimal; }
+	ol, ul.square, ul.circle, ul.disc { margin-left: 30px; }
+	ul.square { list-style: square outside; }
+	ul.circle { list-style: circle outside; }
+	ul.disc { list-style: disc outside; }
+	ul ul, ul ol,
+	ol ol, ol ul { margin: 4px 0 5px 30px; font-size: 90%;  }
+	ul ul li, ul ol li,
+	ol ol li, ol ul li { margin-bottom: 6px; }
+	li { line-height: 18px; margin-bottom: 12px; }
+	ul.large li { line-height: 21px; }
+	li p { line-height: 21px; }
+
+.menu {
+    margin-bottom: 10px;
 }

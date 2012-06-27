@@ -1,10 +1,14 @@
 {% extends "basewtop.html" %}
 {% block title %}Create Challenge - GeoSnap!{% endblock %}
 {% block subcontents %}
-<ol>
-  <li>Take a snapshot of something</li>
-  <li>We will save the coordinates where this photo was captured</li>
-  <li>The challenge will be to find the place where the picture was taken!</li>
-</ol>
-<a class="btn" href="{{url_for('.take_picture', id=id, type='high')}}">Let's go!</a>
+<div class="container">
+  <div class="sixteen columns alpha omega">
+    <ol>
+      <li>Take a snapshot of something.</li>
+      <li>We will remember where this photo was captured.</li>
+      <li>The challenge will be to find the place where the picture was taken!</li>
+    </ol>
+    <a class="btn" href="{{url_for('.take_picture', id=id, type='high')}}">Let's go!</a>
+  </div>
+</div>
 {% endblock %}

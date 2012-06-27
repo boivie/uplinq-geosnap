@@ -80,7 +80,7 @@ var onLoad = function() {
         // Save camera and create preview
         console.log("onGetCamerasSuccess");
         camera = cameras[0];
-        camera.setFeatureValue("PICTURE_SIZE", "320x240");
+        //camera.setFeatureValue("PICTURE_SIZE", "320x240");
         console.log("  camera id: " + camera.id);
         camera.createPreviewNode(onCreatePreviewNodeSuccess);
     }
@@ -109,6 +109,7 @@ if (navigator.geolocation)
   function (error)
   {
     alert("Failed to do geolocation stuff. Sucks, right? Using mock data.");
+    success({coords: {latitude: 33.6389241, longitude: -84.43270009999999}});
   });
 }
 

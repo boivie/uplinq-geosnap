@@ -1,6 +1,10 @@
 {% extends "basewtop.html" %}
 {% block title %}Create Challenge - GeoSnap!{% endblock %}
 {% block subcontents %}
-<p>Done! That was all!</p>
-<a class="btn" href="{{url_for('.index')}}">Home</a>
+<div class="container">
+  <div class="sixteen columns alpha omega">
+    <p>That was all! Now, go solve some challenges!</p>
+    <a class="btn" href="{{url_for('.index')}}">Home</a>
+  </div>
+</div>
 {% endblock %}
