@@ -69,7 +69,7 @@ var onLoad = function() {
         console.log("onGetCamerasSuccess");
         camera = cameras[0];
         console.log("  camera id: " + camera.id);
-        camera.setFeatureValue("PICTURE_SIZE", "320x240");
+        //camera.setFeatureValue("PICTURE_SIZE", "320x240");
         camera.createPreviewNode(onCreatePreviewNodeSuccess);
     }
 
@@ -85,7 +85,7 @@ var onLoad = function() {
 } 
 </script> 
 <div id="preview_div" style="width: 250px; height: 250px;"></div>
-<button onClick="onCaptureClicked()">Capture</button>
+<a class="btn" href="javascript:onCaptureClicked()">Capture!</a>
 <script>
 onLoad();
 </script>

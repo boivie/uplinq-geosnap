@@ -38,15 +38,15 @@ if (navigator.geolocation)
   navigator.geolocation.getCurrentPosition(success,
   function (error)
   {
-    alert(error);
+    alert("Failed to do geolocation stuff. Sucks, right? Using mock data.");
   });
 }
 </script> 
 This is where we think you are. Let's hope that's true!
 <div id="mapholder"></div>
-<form method="POST" action="{{url_for('.set_geo', id=id)}}">
+<form name="setgeo" method="POST" action="{{url_for('.set_geo', id=id)}}">
   <input type="hidden" name="lat" id="lat" value="none"/>
   <input type="hidden" name="lon" id="lon" value="none"/>
-  <input type="submit" value="Continue">
+  <a href="#" class="btn" onclick="document['setgeo'].submit()">Continue</a> 
 </form>
 {% endblock %}

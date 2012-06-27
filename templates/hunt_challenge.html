@@ -6,8 +6,8 @@
 <div>
   <img src="{{url_for('.challenge_image', id=id, type='high')}}"/>
 </div>
-<a href="{{url_for('.claim', id=id)}}">I found it!</a>
-<form method="POST" action="{{url_for('.skip_challenge', id=id)}}">
-  <input type="submit" value="Boring... Next!"/>
+<a class="btn" href="{{url_for('.claim', id=id)}}">I found it!</a>
+<form name="skipform" method="POST" action="{{url_for('.skip_challenge', id=id)}}">
+  <a href="#" class="btn" onclick="document['skipform'].submit()">Boring... Skip!</a> 
 </form>
 {% endblock %}
