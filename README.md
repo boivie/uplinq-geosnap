@@ -6,7 +6,7 @@ It uses the Qualcomm HTML Camera API, Screen Orientation API and the HTML5 GeoLo
 
 ## Installation Instructions
 
- - NOTE: You will need to have mongodb and python installed.
+NOTE: You will need to have mongodb and python installed.
 
     $ sudo easy_install virtualenv  # if you don't have it already 
     $ virtualenv ENV
@@ -17,6 +17,10 @@ It uses the Qualcomm HTML Camera API, Screen Orientation API and the HTML5 GeoLo
 
     $ . ENV/bin/activare
     $ python run.py
+
+## Demo
+
+It is currently running at http://bit.ly/NL3fWz but it might disappear at any time.
 
 ## License
 
