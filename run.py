@@ -186,10 +186,14 @@ def skip_challenge(id):
 
 @app.route("/upload/<id>/<type>", methods=["POST"])
 def upload(id, type):
+    print(id, type)
     filename = os.path.join(app.config['UPLOAD_FOLDER'], "%s-%s.jpg" % (id, type))
+    print(filename)
     open(filename, "wb").write(request.data)
+    print("written")
     c = g.db.challenges.find_one({'_id': ObjectId(id)})
     if not c:
+        print("Missing challenge!")
         abort(500)
     c['pic_%s' % type] = {'fname': filename, 'ts': datetime.now()}
     g.db.challenges.save(c, safe=True)
@@ -211,4 +215,5 @@ def upload_solution(id):
 
 if __name__ == "__main__":
     get_db().challenges.ensure_index([("loc", GEO2D)])
+    app.debug = True
     app.run(host='0.0.0.0', port = 8088, debug = True, threaded = True)

@@ -84,8 +84,16 @@ var onLoad = function() {
     navigator.loadModule('camera', onCameraLoadSuccess);
 } 
 </script> 
-<div id="preview_div" style="width: 250px; height: 250px;"></div>
-<a class="btn" href="javascript:onCaptureClicked()">Capture!</a>
+<div class="container menu">
+  <div class="sixteen columns alpha omega">
+    <div id="preview_div" style="width: 250px; height: 250px;"></div>
+  </div>
+</div>
+<div class="container menu">
+  <div class="sixteen columns alpha omega">
+    <a class="btn" href="javascript:onCaptureClicked()">Capture!</a>
+  </div>
+</div>
 <script>
 onLoad();
 </script>

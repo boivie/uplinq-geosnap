@@ -6,8 +6,16 @@
 <div>
   <img src="{{url_for('.challenge_image', id=id, type='high')}}"/>
 </div>
-<a class="btn" href="{{url_for('.claim', id=id)}}">I found it!</a>
-<form name="skipform" method="POST" action="{{url_for('.skip_challenge', id=id)}}">
-  <a href="#" class="btn" onclick="document['skipform'].submit()">Boring... Skip!</a> 
-</form>
+<div class="container menu">
+  <div class="sixteen columns alpha omega">
+    <a class="btn" href="{{url_for('.claim', id=id)}}">I found it!</a>
+  </div>
+</div>
+<div class="container menu">
+  <div class="sixteen columns alpha omega">
+    <form name="skipform" method="POST" action="{{url_for('.skip_challenge', id=id)}}">
+      <a href="#" class="btn" onclick="document['skipform'].submit()">Boring... Skip!</a> 
+    </form>
+  </div>
+</div>
 {% endblock %}
